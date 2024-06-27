@@ -7,23 +7,21 @@ public class AttackBehaviour : MonoBehaviour
 {
     [SerializeField]
     private bool isReady;
-    private BasicEnemyOneBodyRotation getDistance;
-    private float myDistance;
+    private Transform player;
     private float coolDown = 0.5f;
     private Animator m_Animator;
 
 
     private void Awake()
     {
-        getDistance = GetComponentInParent<BasicEnemyOneBodyRotation>();
+        player = GameObject.FindGameObjectWithTag("Jogador").transform;
         m_Animator = GetComponent<Animator>();
-       // Debug.Log("O getDistance está aparecendo : " + getDistance);
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
-        coolDown -= Time.deltaTime;
+        coolDown -= Time.fixedDeltaTime;
         if (coolDown <= 0)
         {
             isReady = true;
@@ -33,13 +31,11 @@ public class AttackBehaviour : MonoBehaviour
 
     private void AttackPlayer()
     {
-        myDistance = getDistance.distance;
-        //Debug.Log(myDistance);
-        if (myDistance < 2.5f && isReady == true)
+
+        float distance = Vector2.Distance(transform.position, player.transform.position);
+        if (distance < 2.2f && isReady == true)
         {
             m_Animator.Play("AtkPlaceHolder", -1, 0);
-            //Debug.Log("Está animando!!");
-
         }
     }
 

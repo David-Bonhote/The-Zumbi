@@ -1,30 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    private RotateToTarget olharParaMouse = new RotateToTarget();
-    private MoveWithInput controlMove = new MoveWithInput();
-    private Rigidbody2D myRigidBody;
 
-    private Vector3 mouse_Pos;
+    [SerializeField] private RotateToTarget olharParaMouse = new RotateToTarget();
+    [SerializeField] private MoveWithInput controlMove = new MoveWithInput();
+    [SerializeField] Rigidbody2D myRigidBody;
 
-    private float speed = 5f;
+    [SerializeField] Vector3 mouse_Pos;
 
-    private Transform corpo;
+    [SerializeField] float speed = 5f;
 
+    [SerializeField] Transform corpo;
 
-    // Start is called before the first frame update
+    [SerializeField] int MaxHeath;
+    [SerializeField] int currentHealth;
+
+    [SerializeField] private PlayerHealthBehaviour healthBar = new PlayerHealthBehaviour();
+    [SerializeField] private Slider slider;
+
+    
     void Start()
     {
-        myRigidBody = GetComponent<Rigidbody2D>();
-        corpo = gameObject.transform.GetChild(0);
-        Debug.Log(corpo);
+        MaxHeath = 10;
+        healthBar.SetMaxHealth( slider ,MaxHeath);
+        currentHealth = MaxHeath;
+
+        
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         mouse_Pos = Input.mousePosition;
@@ -34,5 +41,12 @@ public class PlayerBehaviour : MonoBehaviour
         controlMove.DiretionalInput(myRigidBody, speed);
     }
 
-   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy1"))
+        {
+            currentHealth--;
+            healthBar.SetHealth(slider, currentHealth);
+        }
+    }
 }

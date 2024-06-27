@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Jogador
+  - Enemy1
+  - PlayerHealthBar
+  - PlayerAtk1
   layers:
   - Default
   - TransparentFX
